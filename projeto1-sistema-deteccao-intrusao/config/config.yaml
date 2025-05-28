@@ -1,0 +1,52 @@
+logging:
+  level: INFO
+  file: logs/system.log
+  max_size: 10MB
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+detection:
+  threshold: 5
+  time_window: 300  # segundos
+  sensitivity: medium
+  anomaly_detection:
+    algorithm: isolation_forest
+    contamination: 0.1
+    random_state: 42
+  
+collectors:
+  file:
+    enabled: true
+    poll_interval: 10  # segundos
+  syslog:
+    enabled: false
+    port: 514
+  api:
+    enabled: false
+    endpoint: "http://localhost:8080/logs"
+    auth_token: ""
+
+alerting:
+  email:
+    enabled: false
+    smtp_server: "smtp.example.com"
+    smtp_port: 587
+    username: "alerts@example.com"
+    password: ""
+    recipients: ["admin@example.com"]
+  webhook:
+    enabled: false
+    url: "https://hooks.example.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  console:
+    enabled: true
+    color: true
+  file:
+    enabled: true
+    path: "data/alerts.json"
+
+storage:
+  retention_days: 90
+  compress_after_days: 30
+  database:
+    type: sqlite
+    path: "data/detection.db"
